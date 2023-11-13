@@ -1,0 +1,232 @@
+﻿@model IEnumerable<FeebackApplication.Models.Field>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Fields</h2>
+<div style="text-align: center;">
+    <button type="button" onclick="editfield(0)"  style="padding: 5px 10px; margin-right: 10px; border:none; border-radius:5px;"><i class='fa fa-plus'></i> Create New</button>
+    <button class="popup" type="button" onclick="CopyLink()" style="padding: 5px 10px; border: none; border-radius: 5px;">
+        <i class='fa fa-copy'></i> Formular Link
+        <span class="popuptext" id="myPopup">Link Copied!</span>
+    </button>
+</div>
+
+<div id="example">
+    <div id="grid"></div>
+    <div id="example">
+
+        <div id="window">
+            <div style="text-align: center;">
+                <p id="confirmationText" style="display: none; font-size: 13px;">Are you sure you want to delete this field?</p>
+                <button id="confirmYes" style="display: none; padding: 5px 30px; font-size: 13px; ">Yes</button>
+                <button id="confirmNo" style="display: none; padding: 5px 30px; font-size:13px;">No</button>
+               
+
+            </div>
+        </div>
+
+        <script>
+        $(document).ready(function () {
+
+            $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "../Field/GetField",
+                            type: "POST",
+                            dataType: "json"
+                        },
+                    },
+                    height: 550,
+                    scrollable: true,
+                    sortable: true,
+                    filterable: true,
+                    pageable: {
+                        input: true,
+                        numeric: false
+                    },
+
+                },
+
+                columns: [
+
+                        { field: "Name", title: "Name" },
+                        { field: "Type", title: "Type" },
+                        { field: "IsRequired", title: "IsRequired" },
+                    { field: "ScoreRange", title: "ScoreRange" },
+
+                    {
+                        template: "<table style='border:none !important'>" +
+                            "<tr style='border:none !important'>" +
+                            "<td style='border:none !important;padding:0;'><i class='fa fa-trash-alt fa-lg icon_grid' title='Delete' onclick='deletefiled(#:Id#)'></i></td>" +
+                            "<td style='border:none !important;padding:0;'><span style='padding: 0 5px;'>  |  </span></td>" +
+                            "<td style='border:none !important;padding:0;'><i class='fa fa-edit fa-lg icon_grid' title='Edit' onclick='editfield(#:Id#)'></i></td>" +
+                            "</tr>" +
+                            "</table>",
+                        title: "Actions",
+                        width: 170
+                         }
+                ],
+                 editable: "inline",
+
+            });
+
+        });
+
+ function deletefiled(Id) {
+    var window = $("#window").data("kendoWindow");
+
+    $("#confirmationText").show();
+    $("#confirmYes").show();
+    $("#confirmNo").show();
+    $("#loadingMessage").hide();
+
+    $("#confirmYes").on("click", function() {
+        var deleteUrl = "@Url.Action("DestroyField", "Field")";
+        $.ajax({
+            type: "POST",
+            url: deleteUrl,
+            data: { id: Id },
+            success: successFunc,
+            error: errorFunc
+        });
+
+        window.close();
+    });
+
+    // Set up the click event for "No" button
+    $("#confirmNo").on("click", function() {
+        // Close the window without performing the delete operation
+        window.close();
+    });
+
+    // Show the window
+    window.center().open();
+}
+
+function successFunc(data, status) {
+    alert('Field deleted successfully');
+    var grid = $("#grid").data("kendoGrid");
+    grid.dataSource.read();
+}
+
+function errorFunc() {
+    alert('error');
+}
+
+
+function successFunc(data, status) {
+    alert('Field deleted successfully');
+    var grid = $("#grid").data("kendoGrid");
+    grid.dataSource.read();
+}
+
+function errorFunc() {
+    alert('error');
+}
+            function editfield(id) {
+                var window = $("#window").data("kendoWindow");
+                window.content("<div class='k-loading-mask' style='width: 100%; height: 100%; top: 0px; left: 0px;'><span class='k-loading-text'>Loading...</span><div class='k-loading-image'></div><div class='k-loading-color'></div></div>");
+                window.refresh({
+                    url: "../Field/Create?ID=" + id
+                });
+                window.center().open();
+            }
+        $("#window").kendoWindow({
+            visible: false,
+            width: "600px",
+            title: " "
+        });
+        </script>
+    </div>
+
+   
+
+</div>
+<input type="text" value="https://localhost:44324/Field/Formular" id="linkInput" style="position: absolute; top: -9999px; left: -9999px;">
+<script>
+    function CopyLink() {
+        var copyText = document.getElementById("linkInput");
+
+
+       
+        copyText.select();
+
+       
+        navigator.clipboard.writeText(copyText.value);
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+       
+    }
+
+</script>
+<style>
+    .k-grid-header .k-header {
+        height: 30px;
+        padding: 0;
+    }
+
+    .k-grid tbody tr {
+        line-height: 30px;
+    }
+
+    .k-grid tbody td {
+        padding: 0;
+    }
+
+
+    /* Style for the "Yes" button */
+    #confirmYes {
+        background-color: #007bff; /* Change the background color to blue */
+        color: white; /* Change the text color to white */
+    }
+    .popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+
+</style>

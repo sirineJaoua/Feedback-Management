@@ -1,0 +1,105 @@
+﻿@model IEnumerable<FeebackApplication.Models.Field>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+@{
+    var range = Html.Action("Range", "Field");
+}
+<head>
+    <link href="@Url.Content("~/Content/Formular.css")" rel="stylesheet" type="text/css" />
+    @* Add the Kendo SASS Bootstrap theme: *@
+    <link href="https://kendo.cdn.telerik.com/themes/6.4.0/bootstrap/bootstrap-main.css" rel="stylesheet" type="text/css" />
+
+    @* Add the jQuery script from the Telerik CDN: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jquery.min.js"></script>
+
+    @* Add the Kendo UI scripts: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.aspnetmvc.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="title">Formular</div>
+    <form method="post" action="@Url.Action("Formular","Field")">
+        <div class="feedback">
+
+
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+
+                {
+                    if ((@Html.DisplayFor(modelItem => item.Name).ToString().ToLower()) == "Score".ToLower() || (@Html.DisplayFor(modelItem => item.Name).ToString().ToLower()) == "Rating".ToLower())
+                    {
+
+                        <div class="input-box">
+                            <span class="details">@Html.DisplayFor(modelItem => item.Name)</span>
+                            <input id="rating" name="Fields[@item.Id].Value" style="width: 100%;" />
+                            <script>
+                    $(document).ready(function () {
+                        $("#rating").kendoRating({
+                            max: @range
+                        });
+                    });
+                            </script>
+
+
+
+                        </div>
+
+                    }
+                    else if ((Html.DisplayFor(modelItem => item.Name).ToString().ToLower()) == "Email".ToLower())
+                    {
+                        <div class="input-box">
+
+                            <div class="details">@Html.DisplayFor(modelItem => item.Name)</div>
+
+                            <div class="inputt">
+                                @{
+                                    var required = item.IsRequired ? "required" : "";
+                                }
+                                <input type="email" name="Fields[@item.Id].Value" @required />
+                                @*<input type="hidden" name="Fields[@item.Id].Id" value="@item.Id" />*@
+
+                            </div>
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="input-box">
+
+                            <div class="details">@Html.DisplayFor(modelItem => item.Name)</div>
+
+                            <div class="inputt">
+                                @{
+                                    var required = item.IsRequired ? "required" : "";
+                                }
+                                <input type="text" name="Fields[@item.Id].Value" @required />
+                                @*<input type="hidden" name="Fields[@item.Id].Id" value="@item.Id" />*@
+
+                            </div>
+
+                        </div>
+                    }
+
+                }
+            }
+        </div>
+
+            <div class="button">
+                <input type="submit" value="Submit"  />
+            </div>
+        
+    </form>
+</div>
+    </body>
+
+

@@ -1,0 +1,219 @@
+﻿@model FeebackApplication.Models.NewModel
+
+
+
+@{
+    @{
+        ViewBag.Title = "Form";
+        Layout = null;
+
+
+    }
+    <head>
+
+        <link href="@Url.Content("~/Content/Form.css")" rel="stylesheet" type="text/css" />
+
+        @Styles.Render("~/Content/css")
+
+        <link href="https://kendo.cdn.telerik.com/themes/6.4.0/bootstrap/bootstrap-main.css" rel="stylesheet" type="text/css" />
+
+
+        @* Add the jQuery script from the Telerik CDN: *@
+        <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jquery.min.js"></script>
+
+        @* Add the Kendo UI scripts: *@
+        <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jszip.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.all.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.aspnetmvc.min.js"></script>
+
+
+    </head>
+    <body>
+
+
+        <div class="container">
+            <div class="title">Formular</div>
+            <form method="post" action="@Url.Action("Form","NewModel")">
+
+                <div class="feedback">
+
+
+
+
+
+                    @if (Model != null)
+                    {
+                        foreach (var user in Model.Fields)
+                        {
+                            if (user.Name != "Score" && user.Name != "Product " && user.Name != "Email")
+                            {
+
+                                <div class="input-box">
+                                    <div class="details"> @Html.DisplayFor(model => user.Name)</div>
+                                    <div class="inputt">
+                                        @{
+                                            var required = user.IsRequired ? "required" : "";
+                                        }
+                                        <input type="text" name="Fields[@user.Id].Value" @required>
+                                        @* @Html.EditorFor(model => user.Name, new { htmlAttributes = new { @class = "form-control " } })*@
+                                        @Html.ValidationMessageFor(model => user.Name, "", new { @class = "text-danger " })
+                                    </div>
+                                </div>
+                            }
+
+                            else
+                            {
+                                if (user.Name == "Score")
+                                {
+                                    <div class="input-box">
+                                        <span class="details">@Html.DisplayFor(modelItem => user.Name) </span>
+
+
+                                        <input id="rating" name="Fields[@user.Id].Value" style="width: 100%;" />
+
+
+                                        <script>
+                                            $(document).ready(function () {
+                                                $("#rating").kendoRating(
+                                                    {
+                                                        max: 5
+                                                    });
+
+                                            });
+                                        </script>
+                                    </div>
+                                }
+                                else if (user.Name.ToLower() == "Email".ToLower())
+                                {
+                                    <div class="input-box">
+
+                                        <div class="details">@Html.DisplayFor(modelItem => user.Name)</div>
+
+                                        <div class="inputt">
+                                            @{
+                                                var required = user.IsRequired ? "required" : "";
+                                            }
+                                            <input type="email" name="Fields[@user.Id].Value" @required />
+                                            @*<input type="hidden" name="Fields[@item.Id].Id" value="@item.Id" />*@
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+
+                            }
+                        }
+                        <div class=" Prod text-center mb-1 ">
+                            <h2>Products</h2>
+                        </div>
+
+
+
+
+                        <div id="example">
+                            <div id="grid"></div>
+                            <script>
+                                $(document).ready(function () {
+                                    $("#grid").kendoGrid({
+                                        dataSource: {
+                                            transport: {
+                                                read: {
+                                                    url: "../Product/GetList",
+                                                    type: "POST",
+                                                    dataType: "json"
+                                                }
+                                            }
+                                        },
+                                        height: 400,
+                                        sortable: true,
+                                        columns: [
+                                            { field: "name", title: "Name" },
+                                            { field: "Category", title: "Category" },
+                                            {
+
+                                                template: '<input class="product-rating" name="product_#= data.Id #_rating" data-id="#= data.Id #" style="width: 100%;"  />',
+                                                title: "Score"
+                                            }
+                                        ],
+                                        dataBound: function (e) {
+                                            $(".product-rating").each(function (index, item) {
+                                                console.log($(item).attr("data-id"))
+                                                console.log($(item).val())
+                                                $(item).kendoRating({
+                                                    max: 5
+                                                });
+                                            });
+                                        }
+                                    });
+                                    $("#submitBtn").on("click", function () {
+
+
+
+                                        var productId = $(this).data("id");
+                                        var rating = $(this).val();
+
+                                        // Send the data to the server
+                                        saveRating(productId, rating);
+                                    });
+
+                                    // Function to send the data to the server
+                                    function saveRating(productId, rating) {
+                                        $.ajax({
+                                            url: "/Product/Form",
+                                            type: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                productId: productId,
+                                                rating: rating
+                                            },
+                                            success: function (response) {
+                                                // Handle the success response from the server if needed
+                                                console.log("Rating saved successfully!");
+                                            },
+                                            error: function (xhr, status, error) {
+                                                // Handle errors if any
+                                                console.error("Error while saving rating:", error);
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+
+
+
+
+                            </script>
+
+
+                        </div>
+
+
+                        <div class="button text-center mb-5">
+                            <input id="primaryTextButton" value="Submit" type="submit" />
+                            @*<script>
+                                    $(document).ready(function () {
+                                        $("#primaryTextButton").kendoButton({
+                                            themeColor: "primary"
+
+                                        });
+                                </script>*@
+
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </form>
+        </div>
+
+
+
+    </body>
+
+

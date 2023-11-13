@@ -1,0 +1,66 @@
+﻿
+@model FeebackApplication.Models.User
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<head>
+    <link href="@Url.Content("~/Content/User.css")" rel="stylesheet" type="text/css" />
+</head>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+
+    <p>user</p>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<body>
+    <div class="center">
+        @using (Html.BeginForm("Autherize", "User", FormMethod.Post))
+        {
+            <h1>Login</h1>
+            <form method="post">
+                <div class="txt-field">
+
+                    <input @Html.EditorFor(model => model.Email)
+                    <span></span>
+                    <label>@Html.DisplayNameFor(model => model.Email)</label>
+                    <label>@Html.ValidationMessageFor(model => model.Email)</label>
+                </div>
+
+                <div class="txt-field">
+                    <input @Html.EditorFor(model => model.Password)
+                    <span></span>
+                    <label>@Html.DisplayNameFor(model => model.Password)</label>
+                    <label>@Html.ValidationMessageFor(model => model.Password)</label>
+                </div>
+                <input type="submit" value="Login" />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <label class="field-validation-error error-msg">@ViewBag.ErrorLogin</label>
+                    </div>
+                </div>
+                <div class="signup-link">
+                    Not a member?<p>
+                        @Html.ActionLink("Signup", "Create")
+                    </p>
+
+                </div>
+
+            </form>
+        }
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+</body>
+
+

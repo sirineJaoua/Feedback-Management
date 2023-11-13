@@ -1,0 +1,168 @@
+﻿@model FeebackApplication.Models.Feedback
+
+
+@{
+    ViewBag.Title = "Details";
+    Layout = null;
+
+}
+<head>
+    <link href="@Url.Content("~/Content/FeedbackDetail.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+
+
+    <script src="js/kendo.all.min.js"></script>
+
+    @* Add the Kendo SASS Bootstrap theme: *@
+    <link href="https://kendo.cdn.telerik.com/themes/6.4.0/bootstrap/bootstrap-main.css" rel="stylesheet" type="text/css" />
+
+    @* Add the jQuery script from the Telerik CDN: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jquery.min.js"></script>
+
+    @* Add the Kendo UI scripts: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.606/js/kendo.aspnetmvc.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/***/kendo.all.min.js"></script>
+    <script src="~/Scripts/kendo-ui-license.js"></script>
+</head>
+
+
+
+<div class="row">
+    <div class="col-8">
+        <dl class="details-list">
+            @foreach (var fd in Model.Details)
+            {
+                <dt>@Html.DisplayFor(modelItem => fd.Field.Name)</dt>
+                <dd>@Html.DisplayFor(modelItem => fd.Value)</dd>
+
+            }
+
+
+
+
+        </dl>
+    </div>
+    <div class="col-4">
+        <div id="example">
+            <div class="demo-section wide">
+                <textarea id="editor" rows="10" cols="30" style="width:100%; height:450px" aria-label="editor">
+           
+        </textarea>
+                <div class="flex justify-content-between" style="display:flex; align-items:center">
+                    <button id="primaryTextButton">Send</button>
+                    <div class="k-d-flex k-justify-content-center">
+                        <div class="k-w-300">
+                            <input id="statues" />
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $("#primaryTextButton").kendoButton({
+                            themeColor: "primary"
+                        });
+                    });
+                        </script>
+
+                <script>
+                            $(document).ready(function () {
+                                $("#statues").kendoDropDownList({
+                                    dataTextField: "Name",
+                                    dataValueField: "Id",
+                                    dataSource: {
+                                        transport: {
+                                            read: {
+                                                url: "../Statue/Names",
+                                                type: "GET",
+                                                dataType: "json"
+                                            }
+                                        }
+                                    },
+                                    change: function  (e) {
+                                        var statue = $("#statues").val();
+                                        var updateUrl = "../Feedback/UpdatStatue";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: updateUrl,
+                                            data: { id: @Model.Id, stat: statue },
+                                            success: successFunc,
+                                            error: errorFunc
+                                        });
+
+                                        function successFunc(data, status) {
+                                            alert('Update Changed successfully @Model.Id' + statue);
+
+                                        }
+
+                                        function errorFunc() {
+                                            alert('Invalid modelId: @Model.Id is null staute or empty.' + statue);
+                                        }
+
+
+                                    },
+                                });
+                                    });
+                </script>
+
+
+                <script>
+                    $(document).ready(function () {
+                        // create Editor from textarea HTML element with default set of tools
+                        $("#editor").kendoEditor({
+                            resizable: {
+                                content: true,
+                                toolbar: true
+                            }
+                        });
+                            });
+                </script>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+        <style>
+            /* Apply styles to the container */
+            .row {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
+            /* Style for the details card */
+            .details-list {
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 15px;
+                height: 600px;
+            }
+
+            /* Style for field names */
+            .field-name {
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            /* Style for field values */
+            .field-value {
+                margin-bottom: 10px;
+            }
+
+            /* Add some box-shadow for a card-like effect */
+            .details-card {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .k-button-solid-primary {
+                min-width: 150px;
+                min-height: 2px;
+                padding: 10px;
+            }
+        </style>

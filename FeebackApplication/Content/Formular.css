@@ -1,0 +1,107 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins',sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0.5turn, #3f87a6, #ebf8e1, #f69d3c);
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 5px;
+}
+
+    .container .title {
+        font-size: 25px;
+        font-weight: 500;
+        position: relative;
+    }
+
+        .container .title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            background: linear-gradient(135deg, #3f87a6, #ebf8e1, #f69d3c);
+        }
+
+    .container form .feedback {
+        flex-wrap: wrap;
+        justify-content: space-between
+    }
+
+form .feedback .input-box {
+    margin: 10px 0 12px 0;
+    width: calc(100%/2 -20px);
+}
+
+    form .feedback .input-box .details {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 5px
+    }
+
+.inputt input[type="text"] {
+    height: 45px;
+    width: 50%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 14px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+    .inputt input[type="text"]:focus,
+    .inputt input[type="text"]:valid {
+        border-color: #f69d3c
+    }
+
+.inputt input[type="email"] {
+    height: 45px;
+    width: 50%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 14px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+    .inputt input[type="email"]:focus,
+    .inputt input[type="email"]:valid {
+        border-color: #f69d3c
+    }
+
+form .button {
+    height: 25px;
+    margin: 25px 0;
+}
+
+    form .button input {
+        height: 45px;
+        width: 50%;
+        outline: none;
+        margin-left: 140px;
+        border: none;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        border-radius: 5px;
+        background-color: #3f87a673;
+        color: black;
+    }

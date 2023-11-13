@@ -1,0 +1,82 @@
+﻿/* Custom styles for the navbar */
+.navbar {
+    background-color: black; /* Blue background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Style for the navbar brand */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 24px; /* Increase the font size to make it bigger */
+    color: #FFF; /* White text color */
+    transition: color 0.3s ease-in-out;
+}
+
+/* Style for the navbar links and dropdown links */
+.navbar-nav .nav-link,
+.navbar-nav .dropdown-item {
+    font-size: 18px; /* Increase the font size to make it bigger */
+    color: white; /* White link text color */
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+    /* Style for the active navbar link */
+    .navbar-nav .nav-link.active {
+        color: #F8F9FA; /* Change this color to your desired active link color */
+    }
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+    background-color: #C8C8C8; /* Blue dropdown background color */
+   
+}
+
+/* Style for the dropdown menu items */
+.dropdown-item {
+    color: black; /* White dropdown item text color */
+}
+
+/* Style for the dropdown toggle link */
+.navbar-nav .dropdown-toggle {
+    cursor: pointer;
+}
+
+/* Align icons and text in the navbar links */
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+/* Add spacing between icons and text in the navbar links */
+.icon-text {
+    margin-left: 8px; /* Adjust the margin as per your desired spacing */
+}
+
+/* Style for the navbar toggler icon */
+.navbar-toggler-icon {
+    background-image: url('path/to/your-toggler-icon.png'); /* Replace with your desired icon image */
+    width: 20px; /* Adjust the width as per your icon image */
+    height: 20px; /* Adjust the height as per your icon image */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Add transition effects on hover */
+.navbar:hover {
+    background-color: #0056B3; /* Darker shade of blue on hover */
+}
+
+/* Hover styles for navbar links */
+.navbar-brand:hover,
+.navbar-nav .nav-link:hover,
+.dropdown-item:hover {
+    color: #000; /* Change this color to your desired hover link color */
+}
+
+/* Rotate the toggler icon on hover */
+.navbar:hover .navbar-toggler-icon {
+    transform: rotate(360deg);
+}

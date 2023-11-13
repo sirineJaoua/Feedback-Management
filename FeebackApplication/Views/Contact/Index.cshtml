@@ -1,0 +1,168 @@
+﻿@model IEnumerable<FeebackApplication.Models.Contact>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Contacts</h2>
+<p> </p>
+
+
+<div id="example">
+    <div id="window">
+        <div style="text-align: center;">
+            <p>Some text goes here...</p>
+
+
+        </div>
+    </div>
+    <div id="grid"></div>
+    <div id="example">
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "@Url.Action("GetContact", "Contact")",
+                            type: "POST",
+                            dataType: "json"
+                        },
+                    },
+                    height: 550,
+                    scrollable: true,
+                    sortable: true,
+                    filterable: true,
+                    pageable: {
+                        input: true,
+                        numeric: false
+                    },
+
+                },
+
+                columns: [
+
+                    { field: "FirstName", title: "First Name" },
+                    { field: "LastName", title: "Last Name" },
+                    { field: "Email", title: "Email" },
+                    { field: "phone", title: "Phone" },
+                    {
+                        template: "<table style='border:none !important'>" +
+                            "<tr style='border:none !important'>" +
+                            "<td style='border:none !important;padding:0;'><i class='fas fa-fw fa-comments icon_grid' title='Feedbacks' onclick='inspectFeedback(#:Id#)'></i></td>" +
+
+                            "</tr>" +
+                            "</table>",
+                        title: "Actions",
+                        width: 120}
+
+
+                ],
+                editable: "inline",
+
+
+            });
+
+        });
+
+
+        function inspectFeedback(id) {
+            var window = $("#window").data("kendoWindow");
+            window.content("<div class='k-loading-mask' style='width: 100%; height: 100%; top: 0px; left: 0px;'><span class='k-loading-text'>Loading...</span><div class='k-loading-image'></div><div class='k-loading-color'></div></div>");
+            window.refresh({
+                url: "../Contact/Details?ID=" + id
+            });
+            window.center().open();
+        }
+
+
+        $("#window").kendoWindow({
+            visible: false,
+            width: "80%",
+            height:"100%",
+            title: "Feedback Details"
+        });
+
+
+
+
+    </script>
+</div>
+
+
+
+<style>
+    .k-grid-header .k-header {
+        height: 30px;
+        padding: 0;
+    }
+
+    .k-grid tbody tr {
+        line-height: 30px;
+    }
+
+    .k-grid tbody td {
+        padding: 0;
+    }
+</style>
+@*
+
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phone)
+            </th>
+            <th>
+                feedback
+            </th>
+            <th></th>
+        </tr>
+
+            @foreach (var item in Model)
+            {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @foreach (var fd in item.Feedbacks)
+            {
+                @Html.DisplayFor(modelItem => fd.Creationdate)
+            }
+
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+            }
+
+        </table>
+*@

@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<div class="container">
+    <div class="title">Formular</div>
+    <br/>
+    <span style=" display: flex; justify-content: center; align-items: center;">thank you for submitting!</span>
+   
+   </div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'poppins',sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(0.5turn, #3f87a6, #ebf8e1, #f69d3c);
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 5px;
+        }
+
+            .container .title {
+                font-size: 25px;
+                font-weight: 500;
+                position: relative;
+            }
+
+                .container .title::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 3px;
+                    width: 30px;
+                    background: linear-gradient(135deg, #3f87a6, #ebf8e1, #f69d3c);
+                }
+
+            .container form .feedback {
+                flex-wrap: wrap;
+                justify-content: space-between
+            }
+    </style>

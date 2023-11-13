@@ -1,0 +1,115 @@
+﻿@model FeebackApplication.Models.Contact
+
+@{
+    ViewBag.Title = "Details";
+    Layout = null;
+}
+
+<h2>Details</h2>
+<head>
+    <link href="@Url.Content("~/Content/FeedbackDetail1.css")" rel="stylesheet" type="text/css" />
+</head>
+<div>
+    <h4>Contact</h4>
+    <div id="window1">
+        <div style="text-align: center;">
+         
+
+
+        </div>
+    </div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+
+        <div class="cards-container">
+
+            @foreach (var fd in Model.Feedbacks)
+            {
+
+
+                <div class="card-wrap">
+                    <div class="card-header one">
+                        <i class="fas fa-fw fa-comments"></i>
+                    </div>
+                    <div class="card-content">
+                        <h1 class="card-title"> Feedback</h1>
+                        <strong> Creation Date : </strong>
+
+                        @Html.DisplayFor(modelItem => fd.Creationdate)
+
+                        <br /> <strong>  Status : </strong>
+                        @Html.DisplayFor(modelItem => fd.Status.Name)
+                    </div>
+                    <div class="k-card-footer">
+                        <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button" title="reply"><span class="fas fa-fw fa-reply"></span></a>
+                        <a class="k-button k-button-flat-base k-button-flat k-button-md k-rounded-md k-icon-button" title="info" onclick='FeedbackInfo(@fd.Id)'><span class="fas fa-fw fa-info-circle"></span></a>
+
+                    </div>
+                    <div class="k-card-actions k-card-actions-stretched">
+                        <span class="k-card-action"></span>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+
+
+    </dl>
+
+</div>
+<script>
+    function FeedbackInfo(id) {
+        var window1 = $("#window1").data("kendoWindow");
+        window1.content("<div class='k-loading-mask' style='width: 100%; height: 100%; top: 0px; left: 0px;'><span class='k-loading-text'>Loading...</span><div class='k-loading-image'></div><div class='k-loading-color'></div></div>");
+        window1.refresh({
+            url: "../FeedbackDetail/Details?ID=" + id
+        });
+        window1.center().open();
+    }
+
+
+    $("#window1").kendoWindow({
+        visible: false,
+        width: "700px",
+        title: "Feedback Details"
+
+    });
+</script>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
